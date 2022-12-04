@@ -19,9 +19,12 @@ public class JdbcEmployeePayRollService {
 	            System.out.println(
 	                    "Connection Established successfully");
 	            PreparedStatement st = con.prepareStatement("Select * from employee_details");
-	            boolean result = st.execute();
+	            PreparedStatement st1 = con.prepareStatement("Update salary_details Set BasicPay=? where Salary_id=?");
+	            st1.setInt(1,3000000);
+	            st1.setInt(2,5);
+	            boolean result = st1.execute();
 	            if (result) {
-	                ResultSet rs = st.getResultSet();
+	                ResultSet rs = st1.getResultSet();
 	                while (rs.next()) {
 	                    int id
 	                            = rs.getInt("EmployeeID"); // Retrieve name from db
@@ -45,11 +48,16 @@ public class JdbcEmployeePayRollService {
 	                            = rs.getString("Country"); // Retrieve name from db
 	                    System.out.println(country); // Print result on console
 	                }
-	            }else{
-	                int rowcount=st.getMaxRows();
-	                System.out.println(rowcount);
+//	            }else{
+//	                int rowcount=st1.getMaxRows();
+//	                System.out.println(rowcount);
+//	            }
+	            } else {
+	                int rowCount = st1.getUpdateCount();
+	                System.out.println(rowCount);
 	            }
-	            con.close(); // close connection
+
+	                con.close(); // close connection
 	            System.out.println("Connection Closed....");
 	        } catch (SQLException | ClassNotFoundException e) {
 	            System.out.println(e);
